@@ -1,4 +1,4 @@
-=== lanuageswitcher ===
+=== languageswitcher ===
 Contributors: svenhesse
 Donate link: 
 Tags: language, switcher, bilingual, human, i18n, l10n, multilanguage, multilingual, admin,
