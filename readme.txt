@@ -4,11 +4,11 @@ Donate link:
 Tags: language, switcher, bilingual, human, i18n, l10n, multilanguage, multilingual, admin,
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 
+Stable tag: 0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Provides new tags in the text editor to enter text in different languages. Readers kann toggle between these languages by using the included switch element.
+Provides tags in the editor to enter text in different languages. Readers kann toggle between these languages by using the included switch element.
 
 == Description ==
 
