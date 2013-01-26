@@ -1,6 +1,7 @@
-<?php
+<?php 
 /*
- Plugin Name: Languageswitcher
+Plugin Name: Languageswitcher
+Plugin URI: http://wordpress.org/extend/plugins/languageswitcher/
 Description: After setting two tags, you can use them like normal HTML tags in the editor (only in text mode) to enter your post in different languages. Furthermore a special switch element can be inserted.
 Version: 0.1.1
 Author: Sven Hesse
@@ -142,7 +143,6 @@ function filter_content($content) {
 
 	foreach ($languages as $key => $language) {
 		if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
-
 			$needles = array('<p><'.$language.'-switch>', '<'.$language.'-switch>');
 			$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span>&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
 		
@@ -151,7 +151,6 @@ function filter_content($content) {
 		}
 		
 		if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
-		
 			$needles = array('<'.$language.'></p>', '<'.$language.'>');
 			$content = str_replace($needles, '<div class="languageswitcher text language'.($key+1).'">', $content);
 			
@@ -170,8 +169,11 @@ function filter_content_feed($content) {
 
 	foreach ($languages as $key => $language) {
 		if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
-			$content = str_replace('<'.$language.'>', '<div class="languageswitcher text language'.($key+1).'"><span>&#9660;</span>'.($ucFirst ? ucfirst($language) : $language).'</div>', $content);
-			$content = str_replace('</'.$language.'>', '</div>', $content);
+			$needles = array('<'.$language.'></p>', '<'.$language.'>');
+			$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span>&#9660;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
+			
+			$needles = array('</'.$language.'></p>', '</'.$language.'>');
+			$content = str_replace($needles, '</div>', $content);
 		}
 	}
 	

@@ -16,12 +16,19 @@ After setting two tags, you can use them like normal HTML tags in the editor (on
  
 * saving the selected language using local storage
 * individual styling for switch element
+* special output in feeds
 
 == Installation ==
 
-1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
+1. Upload the whole unpacked directory `languageswitcher` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Go to 'Languageswitcher' in 'Settings' and set your tags and styling.
+1. Go to 'Languageswitcher' in 'Settings' and save your tags and styling.
+
+== Frequently Asked Questions ==
+
+= I don't see anything  =
+
+Go to 'Languageswitcher' in 'Settings' and save your tags and styling.
 
 == Screenshots ==
 
@@ -33,4 +40,8 @@ After setting two tags, you can use them like normal HTML tags in the editor (on
 == Changelog ==
 
 = 0.1 = 
-First release
+* First release
+
+= 0.1.1 (not released yet) = 
+* Minor html bugs fixed
+* improved feed output
