@@ -97,15 +97,15 @@ function languageswitcher_settings() {
 function languageswitcher_options_general_info() {
 	$html = "";
 	$html.= '<p>Set Tags. You can use the set tags to seperate your language afterwards.</p>';
-	$html.= '<p>Insert your content in the text editor (not visual) between &lt;english&gt; and &lt;/english&gt; for one and between &lt;german&gt; and &lt;/german&gt;. for the other set language.<br />';
-	$html.= 'Enter a &lt;english-switch&gt;&lt;/english-switch&gt; to provide a switch element. In your post, a click on the switching element hides the other language.</p>';
+	$html.= '<p>Insert your content in the editor (text mode) between &lt;english&gt; and &lt;/english&gt; for one and between &lt;german&gt; and &lt;/german&gt;. for the other set language.<br />';
+	$html.= 'Enter a &lt;english-switch&gt;&lt;/english-switch&gt; to provide a switch element. In your post, a click on the switch element hides the other language.</p>';
 	$html.= '<p>Replace english and german in this example with your set tags.</p>';
 	
 	echo $html;
 }
 
 function languageswitcher_options_color_info() {
-	echo '<p>Style the switching element individually. Use hexadezimal codes (like <i>#00FF00</i>) oder color names (like <i>red</i>).</p>';
+	echo '<p>Style the switch element individually. Use hexadezimal codes (like <i>#00FF00</i>) oder color names (like <i>red</i>).</p>';
 }
 
 function languageswitcher_options_input($id = '', $default = '') {

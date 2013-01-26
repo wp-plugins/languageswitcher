@@ -7,7 +7,7 @@
 .languageswitcher.switch {
 	display: block;
 	max-width: 100%;
-	height: auto;
+	height: 25px;
 	cursor: pointer;
 	background: <?php echo $options['color_background_inactive']?>;
 	color: <?php echo $options['color_text_inactive']?>;;
