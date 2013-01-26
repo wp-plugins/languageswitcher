@@ -2,7 +2,7 @@
 /*
  Plugin Name: Languageswitcher
 Description: After setting two tags, you can use them like normal HTML tags in the editor (only in text mode) to enter your post in different languages. Furthermore a special switch element can be inserted.
-Version: 0.1
+Version: 0.1.1
 Author: Sven Hesse
 Author URI: http://svenhesse.de
 License: GPL v2 or later
@@ -44,13 +44,14 @@ function languageswitcher_init() {
 
 function appthemes_add_quicktags() {
 	$options = get_option('languageswitcher_options');
+	$languages = array($options['language_1'], $options['language_2']);
 	
 	$js = '';
     $js.= '<script type="text/javascript">';
-	$js.= 'QTags.addButton("eg_language1", "'.$options['language_1'].'", "<'.$options['language_1'].'>", "</'.$options['language_1'].'>");';
-	$js.= 'QTags.addButton("eg_language2", "'.$options['language_2'].'", "<'.$options['language_2'].'>", "</'.$options['language_2'].'>");';
-	$js.= 'QTags.addButton("eg_language1_switch", "'.$options['language_1'].'-switch", "<'.$options['language_1'].'-switch>", "</'.$options['language_1'].'-switch>");';
-	$js.= 'QTags.addButton("eg_language2_switch", "'.$options['language_2'].'-switch", "<'.$options['language_2'].'-switch>", "</'.$options['language_2'].'-switch>");';
+    foreach ($languages as $key => $language) {
+		$js.= 'QTags.addButton("eg_language'.($key+1).'", "'.$language.'", "<'.$language.'>", "</'.$language.'>");';
+		$js.= 'QTags.addButton("eg_language'.($key+1).'_switch", "'.$language.'-switch", "<'.$language.'-switch>", "</'.$language.'-switch>");';
+    }	
 	$js.= '</script>';
     
     echo $js;
@@ -136,25 +137,27 @@ function languageswitcher_color_background_inactive() {
 
 function filter_content($content) {
 	$options = get_option('languageswitcher_options');
-
+	$languages = array($options['language_1'], $options['language_2']);
 	$ucFirst = true;
-	$language1 = $options['language_1'];
-	$language2 = $options['language_2'];
 
-	if (strpos($content, '<'.$language1.'-switch>')) {
-		$content = str_replace('<'.$language1.'-switch>', '<div class="languageswitcher language1"><span>&#9654;</span>'.($ucFirst ? ucfirst($language1) : $language1).'</div>', $content);
-	}
-	if (strpos($content, '<'.$language1.'>') && strpos($content, '</'.$language1.'>')) {
-		$content = str_replace('<'.$language1.'>', '<div class="text language1">', $content);
-		$content = str_replace('</'.$language1.'>', '</div>', $content);
-	}
+	foreach ($languages as $key => $language) {
+		if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
 
-	if (strpos($content, '<'.$language2.'-switch>')) {
-		$content = str_replace('<'.$language2.'-switch>', '<div class="languageswitcher language2"><span>&#9654;</span>'.($ucFirst ? ucfirst($language2) : $language2).'</div>', $content);
-	}
-	if (strpos($content, '<'.$language2.'>') && strpos($content, '</'.$language2.'>')) {
-		$content = str_replace('<'.$language2.'>', '<div class="text language2">', $content);
-		$content = str_replace('</'.$language2.'>', '</div>', $content);
+			$needles = array('<p><'.$language.'-switch>', '<'.$language.'-switch>');
+			$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span>&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
+		
+			$needles = array('</'.$language.'-switch><br />', '</'.$language.'-switch>');
+			$content = str_replace($needles, '</div>', $content);
+		}
+		
+		if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
+		
+			$needles = array('<'.$language.'></p>', '<'.$language.'>');
+			$content = str_replace($needles, '<div class="languageswitcher text language'.($key+1).'">', $content);
+			
+			$needles = array('</'.$language.'></p>', '</'.$language.'>');
+			$content = str_replace($needles ,'</div>', $content);
+		}
 	}
 
 	return $content;
@@ -162,20 +165,15 @@ function filter_content($content) {
 
 function filter_content_feed($content) {
 	$options = get_option('languageswitcher_options');
-
+	$languages = array($options['language_1'], $options['language_2']);
 	$ucFirst = true;
-	$language1 = $options['language_1'];
-	$language2 = $options['language_2'];
 
-	if (strpos($content, '<'.$language1.'>') && strpos($content, '</'.$language1.'>')) {
-		$content = str_replace('<'.$language1.'>', '<div class="text language1"><span>&#9660;</span>'.($ucFirst ? ucfirst($language1) : $language1).'</div>', $content);
-		$content = str_replace('</'.$language1.'>', '</div>', $content);
+	foreach ($languages as $key => $language) {
+		if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
+			$content = str_replace('<'.$language.'>', '<div class="languageswitcher text language'.($key+1).'"><span>&#9660;</span>'.($ucFirst ? ucfirst($language) : $language).'</div>', $content);
+			$content = str_replace('</'.$language.'>', '</div>', $content);
+		}
 	}
-
-	if (strpos($content, '<'.$language2.'>') && strpos($content, '</'.$language2.'>')) {
-		$content = str_replace('<'.$language2.'>', '<div class="text language2"><span>&#9660;</span>'.($ucFirst ? ucfirst($language2) : $language2).'</div>', $content);
-		$content = str_replace('</'.$language2.'>', '</div>', $content);
-	}
-
+	
 	return $content;
 }

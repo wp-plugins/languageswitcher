@@ -4,7 +4,7 @@
 	$options = get_option('languageswitcher_options');
 ?>
 
-.languageswitcher {
+.languageswitcher.switch {
 	display: block;
 	max-width: 100%;
 	height: auto;
@@ -15,16 +15,16 @@
 	margin: 0.7142857143rem 0;
 }
 
-.languageswitcher.active {
+.languageswitcher.switch.active {
 	color: <?php echo $options['color_text_active']?>;
 	background: <?php echo $options['color_background_active']?>;
 }
 
-.languageswitcher:hover,
-.languageswitcher:active, .languageswitcher:focus {
+.languageswitcher.switch:hover,
+.languageswitcher.switch:active, .languageswitcher.switch:focus {
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
 }
 
-.languageswitcher > span {
+.languageswitcher.switch > span {
 	margin: 0 10px 0 5px;
 }
