@@ -4,7 +4,7 @@ Donate link:
 Tags: language, switcher, bilingual, human, i18n, l10n, multilanguage, multilingual, admin,
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 0.1
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,9 +26,9 @@ After setting two tags, you can use them like normal HTML tags in the editor (on
 
 == Frequently Asked Questions ==
 
-= I don't see anything  =
+= Why isn't it working?  =
 
-Go to 'Languageswitcher' in 'Settings' and save your tags and styling.
+Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 
 == Screenshots ==
 
@@ -39,9 +39,11 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling.
 
 == Changelog ==
 
-= 0.1 = 
-* First release
+= 0.1.1 = 
+* [bug] minor html paragraph bugs fixed
+* [feed] improved output
+* [code] class structure
+* [code] refactoring
 
-= 0.1.1 (not released yet) = 
-* Minor html bugs fixed
-* improved feed output
+= 0.1 = 
+* [general] first release
