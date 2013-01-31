@@ -3,7 +3,7 @@
 Plugin Name: Languageswitcher
 Plugin URI: http://wordpress.org/extend/plugins/languageswitcher/
 Description: After setting two tags, you can use them like normal HTML tags in the editor (only in text mode) to enter your post in different languages. Furthermore a special switch element can be inserted.
-Version: 0.1.1
+Version: 0.1.2
 Author: Sven Hesse
 Author URI: http://svenhesse.de
 License: GPL v2 or later
@@ -34,7 +34,16 @@ if (!class_exists(Languageswitcher)) {
 	 */
 	class Languageswitcher {
 		
-		const VERSION = '0.1.1';
+		/**
+		 * Current plugin version
+		 * 
+		 * @var String
+		 */
+		const VERSION = '0.1.2';
+		
+		var $settings_sections = array();
+		
+		var $settings_fields = array();
 		
 		/**
 		 * Constructur.
@@ -111,17 +120,76 @@ if (!class_exists(Languageswitcher)) {
 		 * Define settings options.
 		 */
 		function settings() {
+			
+			$this->settings_sections = array(
+				array(
+					'id' => 'languageswitcher_general', 
+					'title' => 'General Settings',
+					'callback' => 'general_info'
+				),
+				array(
+					'id' => 'languageswitcher_colors', 
+					'title' => 'Color Settings',
+					'callback' => 'color_info'
+				)
+			);
+			
+			$this->settings_fields = array(
+				$this->settings_sections[0]['id'] => array(
+					array(
+						'id' => 'language_1',
+						'label' => 'Tag for first Language',
+						'default' => 'english',
+						'type' => 'input',
+					),
+					array(
+						'id' => 'language_2',
+						'label' => 'Tag for second Language',
+						'default' => 'german',
+						'type' => 'input',
+					),
+				),
+				$this->settings_sections[1]['id'] => array(
+					array(
+						'id' => 'color_text_active',
+						'label' => 'Text (active)',
+						'default' => '#000000',
+						'type' => 'input',
+					),
+					array(
+						'id' => 'color_background_active',
+						'label' => 'Background (active)',
+						'default' => '#CCCCCC',
+						'type' => 'input',
+					),
+					array(
+						'id' => 'color_text_inactive',
+						'label' => 'Text (inactive)',
+						'default' => '#BBBBBB',
+						'type' => 'input',
+					),
+					array(
+						'id' => 'color_background_inactive',
+						'label' => 'Background (inactive)',
+						'default' => '#EEEEEE',
+						'type' => 'input',
+					),
+				)
+			);
+			
 			register_setting('languageswitcher_options', 'languageswitcher_options');
+			
+			// add settings sections
+			foreach($this->settings_sections as $section) {
+				add_settings_section($section['id'], $section['title'], array(&$this, $section['callback']), 'languageswitcher');
+			}
 		
-			add_settings_section('languageswitcher_general', 'General settings', array(&$this, 'options_general_info'), 'languageswitcher');
-			add_settings_field('language_1', 'Tag for first Language', array(&$this, 'language_1'), 'languageswitcher', 'languageswitcher_general');
-			add_settings_field('language_2', 'Tag for second Language', array(&$this, 'language_2'), 'languageswitcher', 'languageswitcher_general');
-		
-			add_settings_section('languageswitcher_colors', 'Color settings', array(&$this, 'options_color_info'), 'languageswitcher');
-			add_settings_field('color_text_active', 'Text (active)', array(&$this, 'color_text_active', 'languageswitcher'), 'languageswitcher_colors');
-			add_settings_field('color_background_active', 'Background (active)', array(&$this, 'color_background_active'), 'languageswitcher', 'languageswitcher_colors');
-			add_settings_field('color_text_inactive', 'Text (inactive)', array(&$this, 'color_text_inactive'), 'languageswitcher', 'languageswitcher_colors');
-			add_settings_field('color_background_inactive', 'Background (inactive)', array(&$this, 'color_background_inactive'), 'languageswitcher', 'languageswitcher_colors');
+			// add settings fields
+			foreach($this->settings_fields as $key => $section) {
+				foreach($section as $field) {
+					add_settings_field($field['id'], $field['label'], array(&$this, 'callback_'.$field['type']), 'languageswitcher', $key, $field);
+				}
+			}
 		}
 		
 		/**
@@ -144,7 +212,7 @@ if (!class_exists(Languageswitcher)) {
 		/**
 		 * Display general options information.
 		 */
-		function options_general_info() {
+		function general_info() {
 			$html = "";
 			$html.= '<p>Set Tags. You can use the set tags to seperate your language afterwards.</p>';
 			$html.= '<p>Insert your content in the editor (text mode) between &lt;english&gt; and &lt;/english&gt; for one and between &lt;german&gt; and &lt;/german&gt;. for the other set language.<br />';
@@ -157,64 +225,18 @@ if (!class_exists(Languageswitcher)) {
 		/**
 		 * Display color options info.
 		 */
-		function options_color_info() {
+		function color_info() {
 			echo '<p>Style the switch element individually. Use hexadezimal codes (like <i>#00FF00</i>) oder color names (like <i>red</i>).</p>';
 		}
 		
 		/**
 		 * Handle input options.
 		 * 
-		 * @param string $id
-		 * @param string $default
+		 * @param array $field
 		 */
-		function options_input($id = '', $default = '') {
+		function callback_input($field) {
 			$options = get_option('languageswitcher_options');
-			if (strlen($options[$id]) == 0) {
-				$options[$id] = $default;
-			}
-			echo "<input id='{$id}' name='languageswitcher_options[{$id}]' size='40' type='text' value='".$options[$id]."' />";
-		}
-		
-		/**
-		 * Add option.
-		 */
-		function language_1() {
-			$this->options_input('language_1', 'english');
-		}
-
-		/**
-		 * Add option.
-		 */
-		 function language_2() {
-			$this->options_input('language_2', 'german');
-		}
-		
-		/**
-		 * Add option.
-		 */
-		function color_text_active() {
-			$this->options_input('color_text_active', '#000000');
-		}
-		
-		/**
-		 * Add option.
-		 */
-		function color_text_inactive() {
-			$this->options_input('color_text_inactive', '#CCCCCC');
-		}
-		
-		/**
-		 * Add option.
-		 */
-		function color_background_active() {
-			$this->options_input('color_background_active', '#BBBBBB');
-		}
-		
-		/**
-		 * Add option.
-		 */
-		function color_background_inactive() {
-			$this->options_input('color_background_inactive', '#EEEEEE');
+			echo "<input id='".$field['id']."' name='languageswitcher_options[".$field['id']."]' size='40' type='text' value='".$options[$field['id']]."' />";
 		}
 		
 		/**
@@ -232,14 +254,14 @@ if (!class_exists(Languageswitcher)) {
 				if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
 					
 					// replace opening switch elements
-					$needles = array('<p><'.$language.'-switch>', '<'.$language.'-switch>');
+					$needles = array('<p><'.$language.'-switch>', '<'.$language.'-switch></p>', '<'.$language.'-switch>');
 					$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span>&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
 				
 					// replace losing language switch elements
-					$needles = array('</'.$language.'-switch><br />', '</'.$language.'-switch>');
+					$needles = array('</'.$language.'-switch><br />', '</'.$language.'-switch></p>', '</'.$language.'-switch>');
 					$content = str_replace($needles, '</div>', $content);
 				}
-				
+
 				if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
 					
 					// replace opening tag elements
@@ -247,7 +269,7 @@ if (!class_exists(Languageswitcher)) {
 					$content = str_replace($needles, '<div class="languageswitcher text language'.($key+1).'">', $content);
 					
 					// replace closing tag elements
-					$needles = array('</'.$language.'></p>', '</'.$language.'>');
+					$needles = array('</'.$language.'><br />', '</'.$language.'>');
 					$content = str_replace($needles ,'</div>', $content);
 				}
 			}

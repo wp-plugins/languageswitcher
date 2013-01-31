@@ -39,6 +39,10 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 
 == Changelog ==
 
+= 0.1.2 =
+* [bug] paragraph bug fixed
+* [code] improved settings arrays
+
 = 0.1.1 = 
 * [bug] minor html paragraph bugs fixed
 * [feed] improved output
