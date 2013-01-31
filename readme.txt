@@ -26,9 +26,9 @@ After setting two tags, you can use them like normal HTML tags in the editor (on
 
 == Frequently Asked Questions ==
 
-= I don't see anything  =
+= Why isn't it working?  =
 
-Go to 'Languageswitcher' in 'Settings' and save your tags and styling.
+Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 
 == Screenshots ==
 
@@ -39,9 +39,9 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling.
 
 == Changelog ==
 
-= 0.1 = 
-* First release
-
 = 0.1.1 (not released yet) = 
 * Minor html bugs fixed
 * improved feed output
+
+= 0.1 = 
+* First release
