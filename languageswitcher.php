@@ -60,13 +60,9 @@ if (!class_exists(Languageswitcher)) {
 			// set admin menu and options
 			add_action('admin_menu', array(&$this, 'add_settings_page'));
 			add_filter('admin_init', array(&$this, 'settings'));
-			
-			// filter content and feed content			
-			if (!is_feed()) {
-				add_filter('the_content', array(&$this, 'filter_content'));
-			} else {
-				add_filter('the_content_feed', array(&$this, 'filter_content_feed'));
-			}
+						
+			// filter content
+			add_filter('the_content', array(&$this, 'filter_content'));
 		}
 
 		/**
@@ -128,6 +124,11 @@ if (!class_exists(Languageswitcher)) {
 					'callback' => 'general_info'
 				),
 				array(
+						'id' => 'languageswitcher_behaviour',
+						'title' => 'Behaviour',
+						'callback' => 'behaviour_info'
+				),
+				array(
 					'id' => 'languageswitcher_colors', 
 					'title' => 'Color Settings',
 					'callback' => 'color_info'
@@ -148,8 +149,26 @@ if (!class_exists(Languageswitcher)) {
 						'default' => 'german',
 						'type' => 'input',
 					),
+					array(
+							'id' => 'language_2',
+							'label' => 'Tag for second Language',
+							'default' => 'german',
+							'type' => 'input',
+					),
 				),
 				$this->settings_sections[1]['id'] => array(
+					array(
+							'id' => 'shadow',
+							'label' => 'Show hover shadow',
+							'default' => 'no',
+							'type' => 'radio',
+							'options' => array(
+								'Yes',
+								'No'
+							)
+					),
+				),
+				$this->settings_sections[2]['id'] => array(
 					array(
 						'id' => 'color_text_active',
 						'label' => 'Text (active)',
@@ -230,13 +249,34 @@ if (!class_exists(Languageswitcher)) {
 		}
 		
 		/**
+		 * Display behaviour options info.
+		 */
+		function behaviour_info() {
+			echo '<p>Set some behaviour options.</p>';
+		}
+		
+		/**
 		 * Handle input options.
 		 * 
 		 * @param array $field
 		 */
 		function callback_input($field) {
 			$options = get_option('languageswitcher_options');
-			echo "<input id='".$field['id']."' name='languageswitcher_options[".$field['id']."]' size='40' type='text' value='".$options[$field['id']]."' />";
+			echo "<input id='".$field['id']."' name='languageswitcher_options[".$field['id']."]' size='40' type='text' value='".$options[$field['id']]."'>";
+		}
+		
+		/**
+		 * Handle input options.
+		 *
+		 * @param array $field
+		 */
+		function callback_radio($field) {
+			$options = get_option('languageswitcher_options');
+			
+			foreach($field['options'] as $option) {
+				$checked = $option == $options[$field['id']] ? 'checked' : 'unchecked';
+				echo "<input id='".$field['id']."' name='languageswitcher_options[".$field['id']."]' type='radio' value='".$option."' ".$checked." > ".$option."<br />";
+			}
 		}
 		
 		/**
@@ -246,34 +286,40 @@ if (!class_exists(Languageswitcher)) {
 		 * @return string
 		 */
 		function filter_content($content) {
-			$options = get_option('languageswitcher_options');
-			$languages = array($options['language_1'], $options['language_2']);
-			$ucFirst = true;
-		
-			foreach ($languages as $key => $language) {
-				if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
-					
-					// replace opening switch elements
-					$needles = array('<p><'.$language.'-switch>', '<'.$language.'-switch></p>', '<'.$language.'-switch>');
-					$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span>&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
-				
-					// replace losing language switch elements
-					$needles = array('</'.$language.'-switch><br />', '</'.$language.'-switch></p>', '</'.$language.'-switch>');
-					$content = str_replace($needles, '</div>', $content);
-				}
 
-				if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
+			if (is_feed()) {
+				return $this->filter_content_feed($content);
+			}
+			else {
+				$options = get_option('languageswitcher_options');
+				$languages = array($options['language_1'], $options['language_2']);
+				$ucFirst = true;
+			
+				foreach ($languages as $key => $language) {
+					if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
+						
+						// replace opening switch elements
+						$needles = array('<'.$language.'-switch>');
+						$content = str_replace($needles, '<span class="languageswitcher switch language'.($key+1).'"><span class="languageswitcher arrow">&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
 					
-					// replace opening tag elements
-					$needles = array('<'.$language.'></p>', '<'.$language.'>');
-					$content = str_replace($needles, '<div class="languageswitcher text language'.($key+1).'">', $content);
+						// replace losing language switch elements
+						$needles = array('</'.$language.'-switch><br />', '</'.$language.'-switch>');
+						$content = str_replace($needles, '</span>', $content);
+					}
 					
-					// replace closing tag elements
-					$needles = array('</'.$language.'><br />', '</'.$language.'>');
-					$content = str_replace($needles ,'</div>', $content);
+					if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
+						
+						// replace opening tag elements
+						$needles = array('<'.$language.'>');
+						$content = str_replace($needles, '<span class="languageswitcher text language'.($key+1).'">', $content);
+						
+						// replace closing tag elements
+						$needles = array('</'.$language.'><br />', '</'.$language.'>');
+						$content = str_replace($needles ,'</span>', $content);
+					}
 				}
 			}
-		
+			
 			return $content;
 		}
 		
@@ -287,17 +333,17 @@ if (!class_exists(Languageswitcher)) {
 			$options = get_option('languageswitcher_options');
 			$languages = array($options['language_1'], $options['language_2']);
 			$ucFirst = true;
-		
+
 			foreach ($languages as $key => $language) {
 				if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
 					
 					// replace closing tag elements
-					$needles = array('<'.$language.'></p>', '<'.$language.'>');
-					$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span>&#9660;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
+					$needles = array('<'.$language.'>');
+					$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span class="languageswitcher arrow">&#9660;</span>'.($ucFirst ? ucfirst($language) : $language).'</div>', $content);
 
 					// replace closing tag elements
-					$needles = array('</'.$language.'></p>', '</'.$language.'>');
-					$content = str_replace($needles, '</div>', $content);
+					$needles = array('</'.$language.'>');
+					$content = str_replace($needles, '', $content);
 				}
 			}
 			

@@ -20,11 +20,14 @@
 	background: <?php echo $options['color_background_active']?>;
 }
 
+<?php if ($options['shadow'] == 'Yes'): ?>
 .languageswitcher.switch:hover,
 .languageswitcher.switch:active, .languageswitcher.switch:focus {
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
 }
+<?php endif; ?>
 
-.languageswitcher.switch > span {
+
+.languageswitcher.switch > .languageswitcher.arrow {
 	margin: 0 10px 0 5px;
 }
