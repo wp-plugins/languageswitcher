@@ -26,40 +26,40 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 if (!class_exists(Languageswitcher)) {
-
+	
 	/**
 	 * Languageswitcher Class.
-	 *
+	 * 
 	 * @author svenhesse
 	 */
 	class Languageswitcher {
-
+		
 		const VERSION = '0.1.1';
-
+		
 		/**
 		 * Constructur.
 		 */
 		function __construct() {
-				
+			
 			// set special links on plugin pages
 			add_filter('plugin_row_meta', array(&$this, 'settings_link'), 10, 2);
-
+				
 			// load scripts and styles
-			add_action('wp_enqueue_scripts', array($this, 'scripts_and_styles'));
-			add_action('admin_print_footer_scripts', array($this, 'quicktags'), 100 );
-				
+			add_action('wp_enqueue_scripts', array(&$this, 'scripts_and_styles'));
+			add_action('admin_print_footer_scripts', array(&$this, 'quicktags'), 100 );
+			
 			// set admin menu and options
-			add_action('admin_menu', array($this, 'languageswitcher_add_settings_page'));
-			add_filter('admin_init', array($this, 'languageswitcher_settings'));
-				
-			// filter content and feed content
+			add_action('admin_menu', array(&$this, 'add_settings_page'));
+			add_filter('admin_init', array(&$this, 'settings'));
+			
+			// filter content and feed content			
 			if (!is_feed()) {
-				add_filter('the_content', array($this, 'filter_content'));
+				add_filter('the_content', array(&$this, 'filter_content'));
 			} else {
-				add_filter('the_content_feed', array($this, 'filter_content_feed'));
+				add_filter('the_content_feed', array(&$this, 'filter_content_feed'));
 			}
 		}
-		
+
 		/**
 		 * Set special links on plugin pages.
 		 *
@@ -100,12 +100,34 @@ if (!class_exists(Languageswitcher)) {
 			echo $js;
 		}
 		
-		
-		function languageswitcher_add_settings_page() {
-			add_options_page('Languageswitcher Settings', 'Languageswitcher', 'manage_options', 'languageswitcher', array($this, 'languageswitcher_settings_page'));
+		/**
+		 * Add settings page to wordpress menu.
+		 */
+		function add_settings_page() {
+			add_options_page('Languageswitcher Settings', 'Languageswitcher', 'manage_options', 'languageswitcher', array(&$this, 'settings_page'));
 		}
 		
-		function languageswitcher_settings_page() {
+		/**
+		 * Define settings options.
+		 */
+		function settings() {
+			register_setting('languageswitcher_options', 'languageswitcher_options');
+		
+			add_settings_section('languageswitcher_general', 'General settings', array(&$this, 'options_general_info'), 'languageswitcher');
+			add_settings_field('language_1', 'Tag for first Language', array(&$this, 'language_1'), 'languageswitcher', 'languageswitcher_general');
+			add_settings_field('language_2', 'Tag for second Language', array(&$this, 'language_2'), 'languageswitcher', 'languageswitcher_general');
+		
+			add_settings_section('languageswitcher_colors', 'Color settings', array(&$this, 'options_color_info'), 'languageswitcher');
+			add_settings_field('color_text_active', 'Text (active)', array(&$this, 'color_text_active', 'languageswitcher'), 'languageswitcher_colors');
+			add_settings_field('color_background_active', 'Background (active)', array(&$this, 'color_background_active'), 'languageswitcher', 'languageswitcher_colors');
+			add_settings_field('color_text_inactive', 'Text (inactive)', array(&$this, 'color_text_inactive'), 'languageswitcher', 'languageswitcher_colors');
+			add_settings_field('color_background_inactive', 'Background (inactive)', array(&$this, 'color_background_inactive'), 'languageswitcher', 'languageswitcher_colors');
+		}
+		
+		/**
+		 * Set content of settings page.
+		 */
+		function settings_page() {
 			?>
 			<div class="wrap">
 				<?php screen_icon(); ?>
@@ -119,21 +141,10 @@ if (!class_exists(Languageswitcher)) {
 			<?php
 		}
 		
-		function languageswitcher_settings() {
-			register_setting('languageswitcher_options', 'languageswitcher_options');
-		
-			add_settings_section('languageswitcher_general', 'General settings', array($this, 'languageswitcher_options_general_info'), 'languageswitcher');
-			add_settings_field('language_1', 'Tag for first Language', array($this, 'languageswitcher_language_1'), 'languageswitcher', 'languageswitcher_general');
-			add_settings_field('language_2', 'Tag for second Language', array($this, 'languageswitcher_language_2'), 'languageswitcher', 'languageswitcher_general');
-		
-			add_settings_section('languageswitcher_colors', 'Color settings', array($this, 'languageswitcher_options_color_info'), 'languageswitcher');
-			add_settings_field('color_text_active', 'Text (active)', array($this, 'languageswitcher_color_text_active'), 'languageswitcher', 'languageswitcher_colors');
-			add_settings_field('color_background_active', 'Background (active)', array($this, 'languageswitcher_color_background_active'), 'languageswitcher', 'languageswitcher_colors');
-			add_settings_field('color_text_inactive', 'Text (inactive)', array($this, 'languageswitcher_color_text_inactive'), 'languageswitcher', 'languageswitcher_colors');
-			add_settings_field('color_background_inactive', 'Background (inactive)', array($this, 'languageswitcher_color_background_inactive'), 'languageswitcher', 'languageswitcher_colors');
-		}
-		
-		function languageswitcher_options_general_info() {
+		/**
+		 * Display general options information.
+		 */
+		function options_general_info() {
 			$html = "";
 			$html.= '<p>Set Tags. You can use the set tags to seperate your language afterwards.</p>';
 			$html.= '<p>Insert your content in the editor (text mode) between &lt;english&gt; and &lt;/english&gt; for one and between &lt;german&gt; and &lt;/german&gt;. for the other set language.<br />';
@@ -143,11 +154,20 @@ if (!class_exists(Languageswitcher)) {
 			echo $html;
 		}
 		
-		function languageswitcher_options_color_info() {
+		/**
+		 * Display color options info.
+		 */
+		function options_color_info() {
 			echo '<p>Style the switch element individually. Use hexadezimal codes (like <i>#00FF00</i>) oder color names (like <i>red</i>).</p>';
 		}
 		
-		function languageswitcher_options_input($id = '', $default = '') {
+		/**
+		 * Handle input options.
+		 * 
+		 * @param string $id
+		 * @param string $default
+		 */
+		function options_input($id = '', $default = '') {
 			$options = get_option('languageswitcher_options');
 			if (strlen($options[$id]) == 0) {
 				$options[$id] = $default;
@@ -155,44 +175,78 @@ if (!class_exists(Languageswitcher)) {
 			echo "<input id='{$id}' name='languageswitcher_options[{$id}]' size='40' type='text' value='".$options[$id]."' />";
 		}
 		
-		function languageswitcher_language_1() {
-			$this->languageswitcher_options_input('language_1', 'english');
+		/**
+		 * Add option.
+		 */
+		function language_1() {
+			$this->options_input('language_1', 'english');
 		}
-		function languageswitcher_language_2() {
-			$this->languageswitcher_options_input('language_2', 'german');
-		}
-		function languageswitcher_color_text_active() {
-			$this->languageswitcher_options_input('color_text_active', '#000000');
-		}
-		function languageswitcher_color_text_inactive() {
-			$this->languageswitcher_options_input('color_text_inactive', '#CCCCCC');
-		}
-		function languageswitcher_color_background_active() {
-			$this->languageswitcher_options_input('color_background_active', '#BBBBBB');
-		}
-		function languageswitcher_color_background_inactive() {
-			$this->languageswitcher_options_input('color_background_inactive', '#EEEEEE');
+
+		/**
+		 * Add option.
+		 */
+		 function language_2() {
+			$this->options_input('language_2', 'german');
 		}
 		
+		/**
+		 * Add option.
+		 */
+		function color_text_active() {
+			$this->options_input('color_text_active', '#000000');
+		}
+		
+		/**
+		 * Add option.
+		 */
+		function color_text_inactive() {
+			$this->options_input('color_text_inactive', '#CCCCCC');
+		}
+		
+		/**
+		 * Add option.
+		 */
+		function color_background_active() {
+			$this->options_input('color_background_active', '#BBBBBB');
+		}
+		
+		/**
+		 * Add option.
+		 */
+		function color_background_inactive() {
+			$this->options_input('color_background_inactive', '#EEEEEE');
+		}
+		
+		/**
+		 * Replace special plugin tags in content.
+		 * 
+		 * @param string $content
+		 * @return string
+		 */
 		function filter_content($content) {
 			$options = get_option('languageswitcher_options');
-			var_dump($options); die();
 			$languages = array($options['language_1'], $options['language_2']);
 			$ucFirst = true;
 		
 			foreach ($languages as $key => $language) {
 				if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
+					
+					// replace opening switch elements
 					$needles = array('<p><'.$language.'-switch>', '<'.$language.'-switch>');
 					$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span>&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
 				
+					// replace losing language switch elements
 					$needles = array('</'.$language.'-switch><br />', '</'.$language.'-switch>');
 					$content = str_replace($needles, '</div>', $content);
 				}
 				
 				if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
+					
+					// replace opening tag elements
 					$needles = array('<'.$language.'></p>', '<'.$language.'>');
 					$content = str_replace($needles, '<div class="languageswitcher text language'.($key+1).'">', $content);
 					
+					// replace closing tag elements
 					$needles = array('</'.$language.'></p>', '</'.$language.'>');
 					$content = str_replace($needles ,'</div>', $content);
 				}
@@ -201,6 +255,12 @@ if (!class_exists(Languageswitcher)) {
 			return $content;
 		}
 		
+		/**
+		 * Replace special plugin tags in feed content.
+		 * 
+		 * @param string $content
+		 * @return sting
+		 */
 		function filter_content_feed($content) {
 			$options = get_option('languageswitcher_options');
 			$languages = array($options['language_1'], $options['language_2']);
@@ -208,9 +268,12 @@ if (!class_exists(Languageswitcher)) {
 		
 			foreach ($languages as $key => $language) {
 				if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
+					
+					// replace closing tag elements
 					$needles = array('<'.$language.'></p>', '<'.$language.'>');
 					$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span>&#9660;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
-					
+
+					// replace closing tag elements
 					$needles = array('</'.$language.'></p>', '</'.$language.'>');
 					$content = str_replace($needles, '</div>', $content);
 				}
@@ -218,9 +281,7 @@ if (!class_exists(Languageswitcher)) {
 			
 			return $content;
 		}
-		
 	}
-	
 }
 
 // init plugin
