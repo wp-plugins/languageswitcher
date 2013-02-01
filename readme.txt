@@ -39,15 +39,17 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 
 == Changelog ==
 
+= 0.1.3 =
+* [bug] hiding wrong elements when using spans disabled
+
 = 0.1.2 =
-* [bug] paragraph replacement removed
 * [bug] incompatibily to other plugins improved
 * [feedback] option to active/deactiver hover shadow
 * [code] improved settings arrays
 
 = 0.1.1 = 
 * [bug] minor html paragraph bugs fixed
-* [feed] improved output
+* [feature] improved feed output
 * [code] class structure
 * [code] refactoring
 

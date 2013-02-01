@@ -3,7 +3,7 @@
 Plugin Name: Languageswitcher
 Plugin URI: http://wordpress.org/extend/plugins/languageswitcher/
 Description: After setting two tags, you can use them like normal HTML tags in the editor (only in text mode) to enter your post in different languages. Furthermore a special switch element can be inserted.
-Version: 0.1.2
+Version: 0.1.3
 Author: Sven Hesse
 Author URI: http://svenhesse.de
 License: GPL v2 or later
@@ -39,7 +39,7 @@ if (!class_exists(Languageswitcher)) {
 		 * 
 		 * @var String
 		 */
-		const VERSION = '0.1.2';
+		const VERSION = '0.1.3';
 		
 		var $settings_sections = array();
 		
@@ -300,22 +300,22 @@ if (!class_exists(Languageswitcher)) {
 						
 						// replace opening switch elements
 						$needles = array('<'.$language.'-switch>');
-						$content = str_replace($needles, '<span class="languageswitcher switch language'.($key+1).'"><span class="languageswitcher arrow">&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
+						$content = str_replace($needles, '<div class="languageswitcher switch language'.($key+1).'"><span class="languageswitcher arrow">&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
 					
 						// replace losing language switch elements
 						$needles = array('</'.$language.'-switch><br />', '</'.$language.'-switch>');
-						$content = str_replace($needles, '</span>', $content);
+						$content = str_replace($needles, '</div>', $content);
 					}
 					
 					if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
 						
 						// replace opening tag elements
 						$needles = array('<'.$language.'>');
-						$content = str_replace($needles, '<span class="languageswitcher text language'.($key+1).'">', $content);
+						$content = str_replace($needles, '<div class="languageswitcher text language'.($key+1).'">', $content);
 						
 						// replace closing tag elements
 						$needles = array('</'.$language.'><br />', '</'.$language.'>');
-						$content = str_replace($needles ,'</span>', $content);
+						$content = str_replace($needles ,'</div>', $content);
 					}
 				}
 			}
