@@ -3,7 +3,7 @@
 Plugin Name: Languageswitcher
 Plugin URI: http://wordpress.org/extend/plugins/languageswitcher/
 Description: After setting two tags, you can use them like normal HTML tags in the editor (only in text mode) to enter your post in different languages. Furthermore a special switch element can be inserted.
-Version: 0.1.3
+Version: 0.2
 Author: Sven Hesse
 Author URI: http://svenhesse.de
 License: GPL v2 or later
@@ -35,20 +35,42 @@ if (!class_exists(Languageswitcher)) {
 	class Languageswitcher {
 		
 		/**
-		 * Current plugin version
+		 * Current plugin version.
 		 * 
-		 * @var String
+		 * @var string
 		 */
-		const VERSION = '0.1.3';
-		
-		var $settings_sections = array();
-		
-		var $settings_fields = array();
+		const VERSION = '0.2';
 		
 		/**
-		 * Constructur.
+		 * Name of plugins options.
+		 * 
+		 * @var string
 		 */
-		function __construct() {
+		private $settings_name = 'languageswitcher_options';
+		
+		/**
+		 * Singleton instance.
+		 *
+		 * @var object
+		 */
+		private static $_instance;
+		
+		/**
+		 * Singleton.
+		 *
+		 * @return object
+		 */
+		public static function getInstance() {
+			if (!self::$_instance) {
+				self::$_instance = new Languageswitcher();
+			}
+			return self::$_instance;
+		}
+		
+		/**
+		 * Constructor.
+		 */
+		private function __construct() {
 			
 			// set special links on plugin pages
 			add_filter('plugin_row_meta', array(&$this, 'settings_link'), 10, 2);
@@ -64,7 +86,7 @@ if (!class_exists(Languageswitcher)) {
 			// filter content
 			add_filter('the_content', array(&$this, 'filter_content'));
 		}
-
+		
 		/**
 		 * Set special links on plugin pages.
 		 *
@@ -91,7 +113,7 @@ if (!class_exists(Languageswitcher)) {
 		 * Add quicktags to text editor.
 		 */
 		function quicktags() {
-			$options = get_option('languageswitcher_options');
+			$options = get_option($this->settings_name);
 			$languages = array($options['language_1'], $options['language_2']);
 		
 			$js = '';
@@ -117,7 +139,7 @@ if (!class_exists(Languageswitcher)) {
 		 */
 		function settings() {
 			
-			$this->settings_sections = array(
+			$settings_sections = array(
 				array(
 					'id' => 'languageswitcher_general', 
 					'title' => 'General Settings',
@@ -135,18 +157,12 @@ if (!class_exists(Languageswitcher)) {
 				)
 			);
 			
-			$this->settings_fields = array(
-				$this->settings_sections[0]['id'] => array(
+			$settings_fields = array(
+				$settings_sections[0]['id'] => array(
 					array(
 						'id' => 'language_1',
 						'label' => 'Tag for first Language',
 						'default' => 'english',
-						'type' => 'input',
-					),
-					array(
-						'id' => 'language_2',
-						'label' => 'Tag for second Language',
-						'default' => 'german',
 						'type' => 'input',
 					),
 					array(
@@ -156,19 +172,29 @@ if (!class_exists(Languageswitcher)) {
 							'type' => 'input',
 					),
 				),
-				$this->settings_sections[1]['id'] => array(
+				$settings_sections[1]['id'] => array(
 					array(
 							'id' => 'shadow',
 							'label' => 'Show hover shadow',
-							'default' => 'no',
+							'default' => 'No',
 							'type' => 'radio',
 							'options' => array(
 								'Yes',
 								'No'
 							)
 					),
+					array(
+							'id' => 'ucfirst',
+							'label' => 'Upper case first letter in switch element',
+							'default' => 'Yes',
+							'type' => 'radio',
+							'options' => array(
+									'Yes',
+									'No'
+							)
+					),
 				),
-				$this->settings_sections[2]['id'] => array(
+				$settings_sections[2]['id'] => array(
 					array(
 						'id' => 'color_text_active',
 						'label' => 'Text (active)',
@@ -196,15 +222,15 @@ if (!class_exists(Languageswitcher)) {
 				)
 			);
 			
-			register_setting('languageswitcher_options', 'languageswitcher_options');
+			register_setting($this->settings_name, $this->settings_name);
 			
 			// add settings sections
-			foreach($this->settings_sections as $section) {
+			foreach($settings_sections as $section) {
 				add_settings_section($section['id'], $section['title'], array(&$this, $section['callback']), 'languageswitcher');
 			}
 		
 			// add settings fields
-			foreach($this->settings_fields as $key => $section) {
+			foreach($settings_fields as $key => $section) {
 				foreach($section as $field) {
 					add_settings_field($field['id'], $field['label'], array(&$this, 'callback_'.$field['type']), 'languageswitcher', $key, $field);
 				}
@@ -220,7 +246,7 @@ if (!class_exists(Languageswitcher)) {
 				<?php screen_icon(); ?>
 				<h2>Languageswitcher Settings</h2>
 				<form method="post" action="options.php">
-					<?php settings_fields('languageswitcher_options'); ?>
+					<?php settings_fields($this->settings_name); ?>
 					<?php do_settings_sections('languageswitcher'); ?>
 					<?php submit_button(); ?>
 				</form>
@@ -261,8 +287,8 @@ if (!class_exists(Languageswitcher)) {
 		 * @param array $field
 		 */
 		function callback_input($field) {
-			$options = get_option('languageswitcher_options');
-			echo "<input id='".$field['id']."' name='languageswitcher_options[".$field['id']."]' size='40' type='text' value='".$options[$field['id']]."'>";
+			$option = get_option($field['id'], $field['default']);
+			echo "<input id='".$field['id']."' name='".$this->settings_name."[".$field['id']."]' size='40' type='text' value='".$option."'>";
 		}
 		
 		/**
@@ -271,11 +297,11 @@ if (!class_exists(Languageswitcher)) {
 		 * @param array $field
 		 */
 		function callback_radio($field) {
-			$options = get_option('languageswitcher_options');
+			$options = get_option($this->settings_name);
 			
 			foreach($field['options'] as $option) {
 				$checked = $option == $options[$field['id']] ? 'checked' : 'unchecked';
-				echo "<input id='".$field['id']."' name='languageswitcher_options[".$field['id']."]' type='radio' value='".$option."' ".$checked." > ".$option."<br />";
+				echo "<input id='".$field['id']."' name='".$this->settings_name."[".$field['id']."]' type='radio' value='".$option."' ".$checked." > ".$option."<br />";
 			}
 		}
 		
@@ -291,10 +317,10 @@ if (!class_exists(Languageswitcher)) {
 				return $this->filter_content_feed($content);
 			}
 			else {
-				$options = get_option('languageswitcher_options');
+				$options = get_option($this->settings_name);
 				$languages = array($options['language_1'], $options['language_2']);
-				$ucFirst = true;
-			
+				$ucFirst = $options['ucfirst'] == 'Yes';
+							
 				foreach ($languages as $key => $language) {
 					if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
 						
@@ -330,10 +356,10 @@ if (!class_exists(Languageswitcher)) {
 		 * @return sting
 		 */
 		function filter_content_feed($content) {
-			$options = get_option('languageswitcher_options');
+			$options = get_option($this->settings_name);
 			$languages = array($options['language_1'], $options['language_2']);
-			$ucFirst = true;
-
+			$ucFirst = $options['ucfirst'] == 'Yes';
+			
 			foreach ($languages as $key => $language) {
 				if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
 					
@@ -353,4 +379,4 @@ if (!class_exists(Languageswitcher)) {
 }
 
 // init plugin
-if(class_exists('Languageswitcher')) new Languageswitcher();
+Languageswitcher::getInstance();;

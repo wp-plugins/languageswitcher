@@ -39,6 +39,11 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 
 == Changelog ==
 
+= 0.2 =
+* [feature] default options for quickstart (needs to be saved)
+* [feedback] option to upper case first letter in switch element
+* [code] singleton pattern
+
 = 0.1.3 =
 * [bug] hiding wrong elements when using spans disabled
 
