@@ -49,7 +49,7 @@ if (!class_exists(Languageswitcher)) {
 		 * 
 		 * @var boolean
 		 */
-		const DEBUG = true;
+		const DEBUG = false;
 		
 		/**
 		 * Textdomain for i18n.
@@ -196,21 +196,21 @@ if (!class_exists(Languageswitcher)) {
 					array(
 							'id' => 'shadow',
 							'label' => __('Enable hover shadow', $this->textdomain),
-							'default' => __('No', $this->textdomain),
+							'default' => 'no',
 							'type' => 'radio',
 							'options' => array(
-								__('Yes', $this->textdomain),
-								__('No', $this->textdomain),
+								'no' => __('No', $this->textdomain),
+								'yes' => __('Yes', $this->textdomain),
 							)
 					),
 					array(
 							'id' => 'ucfirst',
 							'label' => __('Uppercase first letter', $this->textdomain),
-							'default' => __('Yes', $this->textdomain),
+							'default' => 'yes',
 							'type' => 'radio',
 							'options' => array(
-								__('Yes', $this->textdomain),
-								__('No', $this->textdomain),
+								'no' => __('No', $this->textdomain),
+								'yes' => __('Yes', $this->textdomain),
 							)
 					),
 				),
@@ -307,7 +307,7 @@ if (!class_exists(Languageswitcher)) {
 		 * @param array $field
 		 */
 		function callback_input($field) {
-			$option = get_option($field['id'], $field['default']);
+			$option = get_option($this->settings_name)[$field['id']];
 			echo "<input id='".$field['id']."' name='".$this->settings_name."[".$field['id']."]' size='40' type='text' value='".$option."'>";
 		}
 		
@@ -318,10 +318,9 @@ if (!class_exists(Languageswitcher)) {
 		 */
 		function callback_radio($field) {
 			$options = get_option($this->settings_name);
-			
-			foreach($field['options'] as $option) {
-				$checked = $option == $options[$field['id']] ? 'checked' : 'unchecked';
-				echo "<input id='".$field['id']."' name='".$this->settings_name."[".$field['id']."]' type='radio' value='".$option."' ".$checked." > ".$option."<br />";
+			foreach($field['options'] as $key => $option) {
+				$checked = $key == $options[$field['id']] ? 'checked' : 'unchecked';
+				echo "<input id='".$field['id']."' name='".$this->settings_name."[".$field['id']."]' type='radio' value='".$key."' ".$checked." > ".$option."<br />";
 			}
 		}
 		
