@@ -41,6 +41,7 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 
 = 0.2 =
 * [feature] default options for quickstart (needs to be saved)
+* [feature] i18n with german language support
 * [feedback] option to upper case first letter in switch element
 * [code] singleton pattern
 

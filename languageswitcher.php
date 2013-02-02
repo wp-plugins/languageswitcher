@@ -6,23 +6,26 @@ Description: After setting two tags, you can use them like normal HTML tags in t
 Version: 0.2
 Author: Sven Hesse
 Author URI: http://svenhesse.de
+Text Domain: languageswitcher
+Domain Path: /i18n
 License: GPL v2 or later
 */
 
-/*  Copyright 2013  Sven Hesse  (email : languageswitcher@svenhesse.de)
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License, version 2, as
-published by the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+/*  
+ * Copyright 2013  Sven Hesse  (email : languageswitcher@svenhesse.de)
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License, version 2, as
+ * published by the Free Software Foundation.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 if (!class_exists(Languageswitcher)) {
@@ -40,6 +43,20 @@ if (!class_exists(Languageswitcher)) {
 		 * @var string
 		 */
 		const VERSION = '0.2';
+		
+		/**
+		 * Debug mode.
+		 * 
+		 * @var boolean
+		 */
+		const DEBUG = true;
+		
+		/**
+		 * Textdomain for i18n.
+		 * 
+		 * @var string
+		 */
+		private $textdomain = 'languageswitcher';
 		
 		/**
 		 * Name of plugins options.
@@ -71,6 +88,9 @@ if (!class_exists(Languageswitcher)) {
 		 * Constructor.
 		 */
 		private function __construct() {
+
+			// translation
+			load_plugin_textdomain($this->textdomain, false, dirname(plugin_basename(__FILE__)).'/i18n/' );
 			
 			// set special links on plugin pages
 			add_filter('plugin_row_meta', array(&$this, 'settings_link'), 10, 2);
@@ -131,7 +151,7 @@ if (!class_exists(Languageswitcher)) {
 		 * Add settings page to wordpress menu.
 		 */
 		function add_settings_page() {
-			add_options_page('Languageswitcher Settings', 'Languageswitcher', 'manage_options', 'languageswitcher', array(&$this, 'settings_page'));
+			add_options_page(__('Languageswitcher settings', $this->textdomain), 'Languageswitcher', 'manage_options', 'languageswitcher', array(&$this, 'settings_page'));
 		}
 		
 		/**
@@ -142,17 +162,17 @@ if (!class_exists(Languageswitcher)) {
 			$settings_sections = array(
 				array(
 					'id' => 'languageswitcher_general', 
-					'title' => 'General Settings',
+					'title' => __('General', $this->textdomain),
 					'callback' => 'general_info'
 				),
 				array(
 						'id' => 'languageswitcher_behaviour',
-						'title' => 'Behaviour',
+						'title' => __('Behaviour', $this->textdomain),
 						'callback' => 'behaviour_info'
 				),
 				array(
 					'id' => 'languageswitcher_colors', 
-					'title' => 'Color Settings',
+					'title' => __('Color', $this->textdomain),
 					'callback' => 'color_info'
 				)
 			);
@@ -161,13 +181,13 @@ if (!class_exists(Languageswitcher)) {
 				$settings_sections[0]['id'] => array(
 					array(
 						'id' => 'language_1',
-						'label' => 'Tag for first Language',
+						'label' => __('Tag for first language', $this->textdomain),
 						'default' => 'english',
 						'type' => 'input',
 					),
 					array(
 							'id' => 'language_2',
-							'label' => 'Tag for second Language',
+							'label' => __('Tag for second language', $this->textdomain),
 							'default' => 'german',
 							'type' => 'input',
 					),
@@ -175,47 +195,47 @@ if (!class_exists(Languageswitcher)) {
 				$settings_sections[1]['id'] => array(
 					array(
 							'id' => 'shadow',
-							'label' => 'Show hover shadow',
-							'default' => 'No',
+							'label' => __('Enable hover shadow', $this->textdomain),
+							'default' => __('No', $this->textdomain),
 							'type' => 'radio',
 							'options' => array(
-								'Yes',
-								'No'
+								__('Yes', $this->textdomain),
+								__('No', $this->textdomain),
 							)
 					),
 					array(
 							'id' => 'ucfirst',
-							'label' => 'Upper case first letter in switch element',
-							'default' => 'Yes',
+							'label' => __('Uppercase first letter', $this->textdomain),
+							'default' => __('Yes', $this->textdomain),
 							'type' => 'radio',
 							'options' => array(
-									'Yes',
-									'No'
+								__('Yes', $this->textdomain),
+								__('No', $this->textdomain),
 							)
 					),
 				),
 				$settings_sections[2]['id'] => array(
 					array(
 						'id' => 'color_text_active',
-						'label' => 'Text (active)',
+						'label' => __('Text (active)', $this->textdomain),
 						'default' => '#000000',
 						'type' => 'input',
 					),
 					array(
 						'id' => 'color_background_active',
-						'label' => 'Background (active)',
+						'label' => __('Background (active)', $this->textdomain),
 						'default' => '#CCCCCC',
 						'type' => 'input',
 					),
 					array(
 						'id' => 'color_text_inactive',
-						'label' => 'Text (inactive)',
+						'label' => __('Text (inactive)', $this->textdomain),
 						'default' => '#BBBBBB',
 						'type' => 'input',
 					),
 					array(
 						'id' => 'color_background_inactive',
-						'label' => 'Background (inactive)',
+						'label' => __('Background (active)', $this->textdomain),
 						'default' => '#EEEEEE',
 						'type' => 'input',
 					),
@@ -244,7 +264,13 @@ if (!class_exists(Languageswitcher)) {
 			?>
 			<div class="wrap">
 				<?php screen_icon(); ?>
-				<h2>Languageswitcher Settings</h2>
+				<h2><?php _e('Languageswitcher settings', $this->textdomain); ?></h2>
+				
+				<?php 
+				if (self::DEBUG) {
+					var_dump(get_option($this->settings_name));
+				}
+				?>
 				<form method="post" action="options.php">
 					<?php settings_fields($this->settings_name); ?>
 					<?php do_settings_sections('languageswitcher'); ?>
@@ -258,27 +284,21 @@ if (!class_exists(Languageswitcher)) {
 		 * Display general options information.
 		 */
 		function general_info() {
-			$html = "";
-			$html.= '<p>Set Tags. You can use the set tags to seperate your language afterwards.</p>';
-			$html.= '<p>Insert your content in the editor (text mode) between &lt;english&gt; and &lt;/english&gt; for one and between &lt;german&gt; and &lt;/german&gt;. for the other set language.<br />';
-			$html.= 'Enter a &lt;english-switch&gt;&lt;/english-switch&gt; to provide a switch element. In your post, a click on the switch element hides the other language.</p>';
-			$html.= '<p>Replace english and german in this example with your set tags.</p>';
-			
-			echo $html;
+			echo '<p>'._e('Set your tags to use them in the editor (text mode) afterwards.', $this->textdomain).'</p>';
 		}
 		
 		/**
 		 * Display color options info.
 		 */
 		function color_info() {
-			echo '<p>Style the switch element individually. Use hexadezimal codes (like <i>#00FF00</i>) oder color names (like <i>red</i>).</p>';
+			echo '<p>'._e('Set styling options. Use hexadezimal codes (like <i>#00FF00</i>) or color names (like <i>red</i>).', $this->textdomain).'</p>';
 		}
 		
 		/**
 		 * Display behaviour options info.
 		 */
 		function behaviour_info() {
-			echo '<p>Set some behaviour options.</p>';
+			echo '<p>'._e('Set some behaviour options.', $this->textdomain).'</p>';
 		}
 		
 		/**
