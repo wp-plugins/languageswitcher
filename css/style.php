@@ -20,7 +20,7 @@
 	background: <?php echo $options['color_background_active']?>;
 }
 
-<?php if ($options['shadow'] == 'Yes'): ?>
+<?php if ($options['shadow'] == 'yes'): ?>
 .languageswitcher.switch:hover,
 .languageswitcher.switch:active, .languageswitcher.switch:focus {
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;

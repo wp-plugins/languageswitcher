@@ -338,8 +338,8 @@ if (!class_exists(Languageswitcher)) {
 			else {
 				$options = get_option($this->settings_name);
 				$languages = array($options['language_1'], $options['language_2']);
-				$ucFirst = $options['ucfirst'] == 'Yes';
-							
+				$ucFirst = $options['ucfirst'] == 'yes';
+
 				foreach ($languages as $key => $language) {
 					if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
 						
@@ -377,7 +377,7 @@ if (!class_exists(Languageswitcher)) {
 		function filter_content_feed($content) {
 			$options = get_option($this->settings_name);
 			$languages = array($options['language_1'], $options['language_2']);
-			$ucFirst = $options['ucfirst'] == 'Yes';
+			$ucFirst = $options['ucfirst'] == 'yes';
 			
 			foreach ($languages as $key => $language) {
 				if (strpos($content, '<'.$language.'>') && strpos($content, '</'.$language.'>')) {
