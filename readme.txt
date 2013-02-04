@@ -44,6 +44,7 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 * [feature] i18n with german language support
 * [feedback] option to upper case first letter in switch element
 * [code] singleton pattern
+* [code] javascript prepared to handle more than two languages
 
 = 0.1.3 =
 * [bug] hiding wrong elements when using spans disabled
