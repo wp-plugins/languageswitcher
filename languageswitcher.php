@@ -138,10 +138,11 @@ if (!class_exists(Languageswitcher)) {
 		
 			$js = '';
 			$js.= '<script type="text/javascript">';
-			foreach ($languages as $key => $language) {
-				$js.= 'QTags.addButton("eg_language'.($key+1).'", "'.$language.'", "<'.$language.'>", "</'.$language.'>");';
-				$js.= 'QTags.addButton("eg_language'.($key+1).'_switch", "'.$language.'-switch", "<'.$language.'-switch>", "</'.$language.'-switch>");';
+			foreach ($languages as $language) {
+				$js.= 'QTags.addButton("tag_'.$language.'", "'.$language.'", "<'.$language.'>", "</'.$language.'>");';
+				$js.= 'QTags.addButton("tag_'.$language.'_switch", "'.$language.'-switch", "<'.$language.'-switch>", "</'.$language.'-switch>");';
 			}
+			$js.= 'QTags.addButton("tag_multiple_switch", "multiple-switch", "<multiple-switch>", "</multiple-switch>");';
 			$js.= '</script>';
 		
 			echo $js;
@@ -340,14 +341,25 @@ if (!class_exists(Languageswitcher)) {
 				$languages = array($options['language_1'], $options['language_2']);
 				$ucFirst = $options['ucfirst'] == 'yes';
 
+				if (strpos($content, '<multiple-switch>') && strpos($content, '</multiple-switch>')) {
+					
+					// reple opening switch elements
+					$needles = array('<multiple-switch>');
+					$content = str_replace($needles, '<div class="languageswitcher multiple switch" data-language="'.($ucFirst ? ucfirst($languages[0]) : $languages[0]).'"><span class="arrow">&#9660;</span><span class="language">'.($ucFirst ? ucfirst($languages[0]) : $languages[0]).'</span>', $content);
+	
+					// replace closing language switch elements
+					$needles = array('</multiple-switch><br />', '</multiple-switch>');
+					$content = str_replace($needles, '</div>', $content);
+				};				
+				
 				foreach ($languages as $key => $language) {
 					if (strpos($content, '<'.$language.'-switch>') && strpos($content, '</'.$language.'-switch>')) {
 						
 						// replace opening switch elements
 						$needles = array('<'.$language.'-switch>');
-						$content = str_replace($needles, '<div class="languageswitcher switch" data-language="'.$language.'"><span class="languageswitcher arrow">&#9654;</span>'.($ucFirst ? ucfirst($language) : $language).'', $content);
+						$content = str_replace($needles, '<div class="languageswitcher single switch" data-language="'.($ucFirst ? ucfirst($language) : $language).'"><span class="arrow">&#9654;</span><span class="language">'.($ucFirst ? ucfirst($language) : $language).'</span>', $content);
 					
-						// replace losing language switch elements
+						// replace closing language switch elements
 						$needles = array('</'.$language.'-switch><br />', '</'.$language.'-switch>');
 						$content = str_replace($needles, '</div>', $content);
 					}
@@ -356,7 +368,7 @@ if (!class_exists(Languageswitcher)) {
 						
 						// replace opening tag elements
 						$needles = array('<'.$language.'>');
-						$content = str_replace($needles, '<div class="languageswitcher text" data-language="'.$language.'">', $content);
+						$content = str_replace($needles, '<div class="languageswitcher text" data-language="'.($ucFirst ? ucfirst($language) : $language).'">', $content);
 						
 						// replace closing tag elements
 						$needles = array('</'.$language.'><br />', '</'.$language.'>');
@@ -384,7 +396,7 @@ if (!class_exists(Languageswitcher)) {
 					
 					// replace closing tag elements
 					$needles = array('<'.$language.'>');
-					$content = str_replace($needles, '<div class="languageswitcher switch"><span class="languageswitcher arrow">&#9660;</span>'.($ucFirst ? ucfirst($language) : $language).'</div>', $content);
+					$content = str_replace($needles, '<div class="languageswitcher switch"><span class="arrow">&#9660;</span><span class="language">'.($ucFirst ? ucfirst($language) : $language).'</span></div>', $content);
 
 					// replace closing tag elements
 					$needles = array('</'.$language.'>');
