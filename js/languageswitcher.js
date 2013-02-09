@@ -58,23 +58,19 @@ jQuery(document).ready(function($) {
 		
 		$switches.click(function() {
 			
-			if ($multipleswitches.index($(this)) != -1) {
-				//TODO 
+			var data = $(this).data('language');
+			
+			if (data != language) {
+				language = data
 			}
 			else {
-				var data = $(this).data('language');
-				
-				if (data != language) {
-					language = data
-				}
-				else {
-					var length = languages.length;
-					while (data == language) {
-						var i = languages.indexOf(language);
-						language = languages[(i + 1) % length];
-					}
+				var length = languages.length;
+				while (data == language) {
+					var i = languages.indexOf(language);
+					language = languages[(i + 1) % length];
 				}
 			}
+
 			localStorage.setItem("languageswitcher.language", language);
 			toggleLanguage();
 		});
