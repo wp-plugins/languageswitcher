@@ -13,16 +13,26 @@ jQuery(document).ready(function($) {
 	var languages = new Array();
 	var language = '';
 	
+	var configuration = {
+		localStorage: 'languageswitcher.language',
+		spanActive: '&#9660',
+		spanInactive: '&#9654'
+	}
+	
+	/**
+	 * Toggle switches and texts to new global language.
+	 */
 	function toggleLanguage() {
 		
+		// set class and arrow direction on single switches
 		$singleswitches.each(function() {
-				$(this).data('language') == language ? 
-					$(this).addClass('active').children('.arrow').html('&#9660') : 
-						$(this).removeClass('active').children('.arrow').html('&#9654;');
+			$(this).data('language') == language ? 
+				$(this).addClass('active').children('.arrow').html(configuration.spanActive) : $(this).removeClass('active').children('.arrow').html(configuration.spanInactive);
 		});
 		
+		// set class and tag content on multiple switches
 		$multipleswitches.each(function() {
-			$(this).addClass('active');
+			$(this).addClass('active').children('.arrow').html(configuration.spanActive);
 
 			if ($(this).data('language') != language) {
 				$(this).data('language', language);
@@ -30,19 +40,25 @@ jQuery(document).ready(function($) {
 			}
 		});
 		
+		// show or hide text
 		$texts.each(function() {
 			$(this).toggle($(this).data('language') == language);
 		});
 	};
 	
+	/**
+	 * Languageswitcher
+	 */
 	$.languageswitcher = function() {
 
+		// variables
 		$switches = $('.languageswitcher.switch');
 		$singleswitches = $('.languageswitcher.single.switch');
 		$multipleswitches = $('.languageswitcher.multiple.switch');
 		
 		$texts = $('.languageswitcher.text');
 		
+		// find languages
 		$texts.each(function() {
 			var data = $(this).data('language');
 			if (languages.indexOf(data) == -1) {
@@ -50,12 +66,15 @@ jQuery(document).ready(function($) {
 			}
 		});
 		
-		language = $.inArray(localStorage.getItem("languageswitcher.language"), languages) != -1 ?
-				localStorage.getItem("languageswitcher.language") : languages[0];
-		
-		localStorage.setItem("languageswitcher.language", language);
+		// local storage
+		language = $.inArray(localStorage.getItem(configuration.localStorage), languages) != -1 ?
+			localStorage.getItem(configuration.localStorage) : languages[0];
+
+		// toggle to new language
+		localStorage.setItem(configuration.localStorage, language);
 		toggleLanguage();
 		
+		// change language on click
 		$switches.click(function() {
 			
 			var data = $(this).data('language');
@@ -71,7 +90,8 @@ jQuery(document).ready(function($) {
 				}
 			}
 
-			localStorage.setItem("languageswitcher.language", language);
+			// toggle to new language
+			localStorage.setItem(configuration.localStorage, language);
 			toggleLanguage();
 		});
 	};

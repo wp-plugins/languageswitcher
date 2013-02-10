@@ -14,7 +14,7 @@ msgstr ""
 
 
 #: languageswitcher.php:147
-msgid "Languageswitcher settings"
+msgid "Languageswitcher Settings"
 msgstr ""
 
 #: languageswitcher.php:155

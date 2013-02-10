@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: L-Switcher 0.2\n"
 "Report-Msgid-Bugs-To: http://svenhesse.de\n"
 "POT-Creation-Date: 2012-03-27 23:34+0100\n"
-"PO-Revision-Date: 2013-02-02 16:11+0100\n"
+"PO-Revision-Date: 2013-02-10 20:05+0100\n"
 "Last-Translator: Sven Hesse <languageswitcher@svenhesse.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: languageswitcher.php:147
-msgid "Languageswitcher settings"
+msgid "Languageswitcher Settings"
 msgstr "Languageswitcher Einstellungen"
 
 #: languageswitcher.php:155

@@ -152,7 +152,7 @@ if (!class_exists(Languageswitcher)) {
 		 * Add settings page to wordpress menu.
 		 */
 		function add_settings_page() {
-			add_options_page(__('Languageswitcher settings', $this->textdomain), 'Languageswitcher', 'manage_options', 'languageswitcher', array(&$this, 'settings_page'));
+			add_options_page(__('Languageswitcher Settings', $this->textdomain), 'Languageswitcher', 'manage_options', 'languageswitcher', array(&$this, 'settings_page'));
 		}
 		
 		/**
@@ -265,7 +265,7 @@ if (!class_exists(Languageswitcher)) {
 			?>
 			<div class="wrap">
 				<?php screen_icon(); ?>
-				<h2><?php _e('Languageswitcher settings', $this->textdomain); ?></h2>
+				<h2><?php _e('Languageswitcher Settings', $this->textdomain); ?></h2>
 				
 				<?php 
 				if (self::DEBUG) {
