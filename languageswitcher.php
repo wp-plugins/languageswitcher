@@ -308,7 +308,8 @@ if (!class_exists(Languageswitcher)) {
 		 * @param array $field
 		 */
 		function callback_input($field) {
-			$option = get_option($this->settings_name)[$field['id']];
+			$options = get_option($this->settings_name);
+			$option = $options[$field['id']];
 			echo "<input id='".$field['id']."' name='".$this->settings_name."[".$field['id']."]' size='40' type='text' value='".$option."'>";
 		}
 		
