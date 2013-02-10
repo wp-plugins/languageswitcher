@@ -4,7 +4,7 @@ Donate link:
 Tags: language, switcher, bilingual, human, i18n, l10n, multilanguage, multilingual, admin,
 Requires at least: 3.3
 Tested up to: 3.6
-Stable tag: 0.2
+Stable tag: 0.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,9 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 4. Options
 
 == Changelog ==
+
+= 0.2.1 =
+* [bug] seldom php error fixed
 
 = 0.2 =
 * [feedback] multiple switch element

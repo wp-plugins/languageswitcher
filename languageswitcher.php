@@ -3,7 +3,7 @@
 Plugin Name: Languageswitcher
 Plugin URI: http://wordpress.org/extend/plugins/languageswitcher/
 Description: After setting two tags, you can use them like normal HTML tags in the editor (only in text mode) to enter your post in different languages. Furthermore a special switch element can be inserted.
-Version: 0.2
+Version: 0.2.1
 Author: Sven Hesse
 Author URI: http://svenhesse.de
 Text Domain: languageswitcher
@@ -308,7 +308,8 @@ if (!class_exists(Languageswitcher)) {
 		 * @param array $field
 		 */
 		function callback_input($field) {
-			$option = get_option($this->settings_name)[$field['id']];
+			$options = get_option($this->settings_name);
+			$option = $options[$field['id']];
 			echo "<input id='".$field['id']."' name='".$this->settings_name."[".$field['id']."]' size='40' type='text' value='".$option."'>";
 		}
 		
