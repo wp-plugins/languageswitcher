@@ -397,7 +397,7 @@ if (!class_exists(Languageswitcher)) {
 					
 					// replace closing tag elements
 					$needles = array('<'.$language.'>');
-					$content = str_replace($needles, '<div class="languageswitcher switch"><span class="arrow">&#9660;</span><span class="language">'.($ucFirst ? ucfirst($language) : $language).'</span></div>', $content);
+					$content = str_replace($needles, '<div class="languageswitcher switch">[<span class="arrow">&#9660;</span><span class="language">'.($ucFirst ? ucfirst($language) : $language).'</span>] </div>', $content);
 
 					// replace closing tag elements
 					$needles = array('</'.$language.'>');
