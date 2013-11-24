@@ -40,6 +40,7 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 == Changelog ==
 
 = 0.2.2 =
+* [feedback] improved layout on feeds
 * [bug] minor code typo fixed
 
 = 0.2.1 =
