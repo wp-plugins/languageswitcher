@@ -10,7 +10,7 @@
 	height: 25px;
 	cursor: pointer;
 	background: <?php echo $options['color_background_inactive']?>;
-	color: <?php echo $options['color_text_inactive']?>;;
+	color: <?php echo $options['color_text_inactive']?>;
 	margin: 10px 0;
 	margin: 0.7142857143rem 0;
 }
