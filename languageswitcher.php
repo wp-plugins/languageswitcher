@@ -97,7 +97,7 @@ if (!class_exists(Languageswitcher)) {
 				
 			// load scripts and styles
 			add_action('wp_enqueue_scripts', array(&$this, 'scripts_and_styles'));
-			add_action('admin_print_footer_scripts', array(&$this, 'quicktags'), 100 );
+			add_action('admin_print_footer_scripts', array(&$this, 'quicktags'), 100);
 			
 			// set admin menu and options
 			add_action('admin_menu', array(&$this, 'add_settings_page'));
@@ -138,11 +138,13 @@ if (!class_exists(Languageswitcher)) {
 		
 			$js = '';
 			$js.= '<script type="text/javascript">';
+			$js.= 'if (typeof QTags !== "undefined") {';
 			foreach ($languages as $language) {
 				$js.= 'QTags.addButton("tag_'.$language.'", "'.$language.'", "<'.$language.'>", "</'.$language.'>");';
 				$js.= 'QTags.addButton("tag_'.$language.'_switch", "'.$language.'-switch", "<'.$language.'-switch>", "</'.$language.'-switch>");';
 			}
 			$js.= 'QTags.addButton("tag_multiple_switch", "multiple-switch", "<multiple-switch>", "</multiple-switch>");';
+			$js.= '}';
 			$js.= '</script>';
 		
 			echo $js;
