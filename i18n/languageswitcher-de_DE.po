@@ -1,0 +1,88 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: L-Switcher 0.2\n"
+"Report-Msgid-Bugs-To: http://svenhesse.de\n"
+"POT-Creation-Date: 2012-03-27 23:34+0100\n"
+"PO-Revision-Date: 2013-02-10 20:05+0100\n"
+"Last-Translator: Sven Hesse <languageswitcher@svenhesse.de>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: languageswitcher.php:147
+msgid "Languageswitcher Settings"
+msgstr "Languageswitcher Einstellungen"
+
+#: languageswitcher.php:155
+msgid "General"
+msgstr "Allgemein"
+
+#: languageswitcher.php:163
+msgid "Behaviour"
+msgstr "Verhalten"
+
+#: languageswitcher.php:168
+msgid "Color"
+msgstr "Farben"
+
+#: languageswitcher.php:177
+msgid "Tag for first language"
+msgstr "Tag für erste Sprache"
+
+#: languageswitcher.php:183
+msgid "Tag for second language"
+msgstr "Tag für zweite Sprache"
+
+#: languageswitcher.php:191
+msgid "Enable hover shadow"
+msgstr "Schatteneffekte"
+
+#: languageswitcher.php:195
+msgid "Yes"
+msgstr "Ja"
+
+#: languageswitcher.php:196
+msgid "No"
+msgstr "Nein"
+
+#: languageswitcher.php:201
+msgid "Uppercase first letter"
+msgstr "Erste Buchstabe groß"
+
+#: languageswitcher.php:213
+msgid "Text (active)"
+msgstr "Text (aktiv)"
+
+#: languageswitcher.php:219
+msgid "Background (active)"
+msgstr "Hintergrund (aktiv)"
+
+#: languageswitcher.php:225
+msgid "Text (inactive)"
+msgstr "Text (inaktiv)"
+
+#: languageswitcher.php:231
+msgid "Background (inactive)"
+msgstr "Hintergrund (inaktiv)"
+
+#: languageswitcher.php:287
+msgid "Set your tags to use them in the editor (text mode) afterwards."
+msgstr ""
+"Setzen der Tags um diese anschließend im Editor (Text-Modus) zu verwenden."
+
+#: languageswitcher.php:287
+msgid ""
+"Set styling options. Use hexadezimal codes (like <i>#00FF00</i>) or color "
+"names (like <i>red</i>)."
+msgstr ""
+"Aussehen anpassen. Verwendung von hexadezimalen Codes (z.B. <i>#00FF00</i>) "
+"oder Farbnamen (wie <i>red</i>)."
+
+#: languageswitcher.php:291
+msgid "Set some behaviour options."
+msgstr "Verhaltensoptionen anpassen."
