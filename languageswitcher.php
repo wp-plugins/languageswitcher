@@ -3,7 +3,7 @@
 Plugin Name: Languageswitcher
 Plugin URI: http://wordpress.org/extend/plugins/languageswitcher/
 Description: After setting two tags, you can use them like normal HTML tags in the editor (only in text mode) to enter your post in different languages. Furthermore a special switch element can be inserted.
-Version: 0.2.2
+Version: 0.2.4
 Author: Sven Hesse
 Author URI: http://svenhesse.de
 Text Domain: languageswitcher
@@ -12,7 +12,7 @@ License: GPL v2 or later
 */
 
 /*  
- * Copyright 2013  Sven Hesse  (email : languageswitcher@svenhesse.de)
+ * Copyright 2013-2015  Sven Hesse  (email : languageswitcher@svenhesse.de)
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -38,7 +38,7 @@ if (!class_exists(Languageswitcher)) {
 	class Languageswitcher {
 		
 		/**
-		 * Current plugin version.
+		 * Current major version.
 		 * 
 		 * @var string
 		 */
@@ -97,7 +97,7 @@ if (!class_exists(Languageswitcher)) {
 				
 			// load scripts and styles
 			add_action('wp_enqueue_scripts', array(&$this, 'scripts_and_styles'));
-			add_action('admin_print_footer_scripts', array(&$this, 'quicktags'), 100 );
+			add_action('admin_print_footer_scripts', array(&$this, 'quicktags'), 100);
 			
 			// set admin menu and options
 			add_action('admin_menu', array(&$this, 'add_settings_page'));
@@ -138,11 +138,13 @@ if (!class_exists(Languageswitcher)) {
 		
 			$js = '';
 			$js.= '<script type="text/javascript">';
+			$js.= 'if (typeof QTags !== "undefined") {';
 			foreach ($languages as $language) {
 				$js.= 'QTags.addButton("tag_'.$language.'", "'.$language.'", "<'.$language.'>", "</'.$language.'>");';
 				$js.= 'QTags.addButton("tag_'.$language.'_switch", "'.$language.'-switch", "<'.$language.'-switch>", "</'.$language.'-switch>");';
 			}
 			$js.= 'QTags.addButton("tag_multiple_switch", "multiple-switch", "<multiple-switch>", "</multiple-switch>");';
+			$js.= '}';
 			$js.= '</script>';
 		
 			echo $js;
