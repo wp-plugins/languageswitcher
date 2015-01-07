@@ -40,7 +40,7 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 == Changelog ==
 
 = 0.2.4 =
-* [feedback] allowing only one language
+* [feedback] mode for only one language
 
 = 0.2.3 =
 * [bugfix] not working in Safaris private mode

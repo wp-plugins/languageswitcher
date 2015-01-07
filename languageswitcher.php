@@ -140,8 +140,10 @@ if (!class_exists(Languageswitcher)) {
 			$js.= '<script type="text/javascript">';
 			$js.= 'if (typeof QTags !== "undefined") {';
 			foreach ($languages as $language) {
-				$js.= 'QTags.addButton("tag_'.$language.'", "'.$language.'", "<'.$language.'>", "</'.$language.'>");';
-				$js.= 'QTags.addButton("tag_'.$language.'_switch", "'.$language.'-switch", "<'.$language.'-switch>", "</'.$language.'-switch>");';
+				if ($language != "") {
+					$js.= 'QTags.addButton("tag_'.$language.'", "'.$language.'", "<'.$language.'>", "</'.$language.'>");';
+					$js.= 'QTags.addButton("tag_'.$language.'_switch", "'.$language.'-switch", "<'.$language.'-switch>", "</'.$language.'-switch>");';
+				}
 			}
 			$js.= 'QTags.addButton("tag_multiple_switch", "multiple-switch", "<multiple-switch>", "</multiple-switch>");';
 			$js.= '}';
