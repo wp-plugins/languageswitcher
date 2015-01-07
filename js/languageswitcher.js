@@ -68,7 +68,8 @@ jQuery(document).ready(function($) {
 		
 		// local storage
 		language = $.inArray(localStorage.getItem(configuration.localStorage), languages) != -1 ?
-			localStorage.getItem(configuration.localStorage) : languages[0];
+			localStorage.getItem(configuration.localStorage) : (languages.length <= 1 ?
+				null : languages[0]);
 
 		// toggle to new language
 		try {
