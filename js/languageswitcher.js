@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
 
 		// toggle to new language
 		try {
-			localStorage.setItem(configuration.localStorage, language);
+			localStorage.setItem(configuration.localStorage, language);	
 			toggleLanguage();
 		}
 		catch (e) {
@@ -89,9 +89,14 @@ jQuery(document).ready(function($) {
 			}
 			else {
 				var length = languages.length;
-				while (data == language) {
-					var i = languages.indexOf(language);
-					language = languages[(i + 1) % length];
+				if (length > 1) {
+					while (data == language) {
+						var i = languages.indexOf(language);
+						language = languages[(i + 1) % length];
+					}
+				}
+				else {
+					language = null;
 				}
 			}
 
