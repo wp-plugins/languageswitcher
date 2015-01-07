@@ -71,8 +71,13 @@ jQuery(document).ready(function($) {
 			localStorage.getItem(configuration.localStorage) : languages[0];
 
 		// toggle to new language
-		localStorage.setItem(configuration.localStorage, language);
-		toggleLanguage();
+		try {
+			localStorage.setItem(configuration.localStorage, language);
+			toggleLanguage();
+		}
+		catch (e) {
+			//
+		}
 		
 		// change language on click
 		$switches.click(function() {
