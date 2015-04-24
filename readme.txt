@@ -3,8 +3,8 @@ Contributors: svenhesse
 Donate link: 
 Tags: language, switcher, bilingual, human, i18n, l10n, multilanguage, multilingual, admin,
 Requires at least: 3.3
-Tested up to: 3.8
-Stable tag: 0.2.2
+Tested up to: 4.2
+Stable tag: 0.2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,12 +39,21 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 
 == Changelog ==
 
+= 0.2.5 =
+* [bugfix] issue with arrows and twemoji
+
+= 0.2.4 =
+* [feedback] mode for only one language
+
+= 0.2.3 =
+* [bugfix] not working in Safaris private mode
+
 = 0.2.2 =
 * [feedback] improved layout on feeds
-* [bug] minor code typo fixed
+* [bugfix] minor code typo fixed
 
 = 0.2.1 =
-* [bug] seldom php error fixed
+* [bugfix] seldom php error
 
 = 0.2 =
 * [feedback] multiple switch element
@@ -54,15 +63,15 @@ Go to 'Languageswitcher' in 'Settings' and save your tags and styling initially.
 * [code] javascript prepared to handle more than two languages
 
 = 0.1.3 =
-* [bug] hiding wrong elements when using spans disabled
+* [bugfix] hiding wrong elements when using spans disabled
 
 = 0.1.2 =
-* [bug] incompatibily to other plugins improved
+* [bugfix] incompatibily to other plugins improved
 * [feedback] option to active/deactiver hover shadow
 * [code] improved settings arrays
 
 = 0.1.1 = 
-* [bug] minor html paragraph bugs fixed
+* [bugfix] minor html paragraph bugs
 * [feature] improved feed output
 * [code] class structure
 * [code] refactoring
